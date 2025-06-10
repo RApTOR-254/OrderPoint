@@ -17,6 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from api.views import CustomLogoutView
+
 urlpatterns = [
     path('', include('api.urls')),
+    path('oidc/', include('mozilla_django_oidc.urls')),
+    path('oidc/user/logout/', CustomLogoutView.as_view(), name="api_logout"),
 ]

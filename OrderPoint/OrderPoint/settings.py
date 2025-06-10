@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
-from decouple import Config
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,10 +21,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = Config("SECRET_KEY")
+SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = Config("DEBUG")
+DEBUG = config("DEBUG")
 
 ALLOWED_HOSTS = []
 
@@ -45,6 +45,39 @@ INSTALLED_APPS = [
 
 AUTH_USER_MODEL = "api.Customer"
 
+AUTHENTICATION_BACKENDS = [
+    'api.backends.CustomOIDCAuthenticationBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+LOGIN_URL = '/oidc/authenticate'
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/'
+
+OIDC_RP_CLIENT_ID = config('OIDC_RP_CLIENT_ID')
+OIDC_RP_CLIENT_SECRET = config('OIDC_RP_CLIENT_SECRET')
+OIDC_OP_AUTHORIZATION_ENDPOINT = config('OIDC_OP_AUTHORIZATION_ENDPOINT')
+OIDC_OP_TOKEN_ENDPOINT = config('OIDC_OP_TOKEN_ENDPOINT')
+OIDC_OP_USER_ENDPOINT = config('OIDC_OP_USER_ENDPOINT')
+OIDC_OP_JWKS_ENDPOINT = config('OIDC_OP_JWKS_ENDPOINT')
+OIDC_RP_SIGN_ALGO = config('OIDC_RP_SIGN_ALGO')
+
+OIDC_RP_SCOPES = config('OIDC_RP_SCOPES')
+OIDC_USE_NONCE = True
+OIDC_STORE_ID_TOKEN = True
+OIDC_STORE_ACCESS_TOKEN = True
+
+OIDC_CREATE_USER = True
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+}
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -53,6 +86,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'mozilla_django_oidc.middleware.SessionRefresh',
 ]
 
 ROOT_URLCONF = 'OrderPoint.urls'
