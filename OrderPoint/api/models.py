@@ -7,7 +7,7 @@ class Customer(AbstractBaseUser):
     # Customer Identification
     name = models.CharField(max_length=20, blank=True, null=True)
     email = models.EmailField(unique=True, null=False, blank=False, max_length=255)
-    sub = models.CharField(blank=False, null=False)
+    sub = models.CharField(blank=False, null=False, unique=True)
     phone_number = models.CharField(max_length=20, null=True, blank=True)
 
     # Permissions
