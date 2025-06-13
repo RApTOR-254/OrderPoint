@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'rest_framework',
 ]
 
+#AUTHENTICATION
 AUTH_USER_MODEL = "api.Customer"
 
 AUTHENTICATION_BACKENDS = [
@@ -77,6 +78,12 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
 }
+
+#MESSANGING
+AT_API_USERNAME = config('AT_API_USERNAME')
+AT_API_KEY = config('AT_API_KEY')
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

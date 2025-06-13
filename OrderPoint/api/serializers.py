@@ -14,10 +14,10 @@ class OrderSerializer(serializers.ModelSerializer):
 
 
 # Customer (User) serializer
-class CustomerSerializer(serializers.ModelSerializer):
+class CustomerSerializer(serializers.HyperlinkedModelSerializer):
     #Orders associated with customer added explicitly because of reverse relationship
-    orders = serializers.PrimaryKeyRelatedField(many=True, queryset=Order.objects.all())
+    orders = serializers.HyperlinkedRelatedField(many=True, view_name='order-detail', read_only=True)
     
     class Meta:
         model = Customer
-        fields = ["id", "name", "email", "sub", "phone_number", "orders"]
+        fields = ["id", "name", "email", "sub", "phone_number", "orders", "url"]

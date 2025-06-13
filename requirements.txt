@@ -1,3 +1,4 @@
 django
 djangorestframework
 mozilla-django-oidc
+africastalking

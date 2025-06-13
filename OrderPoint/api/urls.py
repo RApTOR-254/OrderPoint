@@ -6,6 +6,7 @@ from api import views
 router = DefaultRouter()
 
 router.register(r'orders', views.OrderViewSet, basename="order")
+router.register(r'customers', views.CustomerViewset, basename="customer")
 
 urlpatterns = [
     path('', include(router.urls))

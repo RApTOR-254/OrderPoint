@@ -16,12 +16,12 @@ class CustomOIDCAuthenticationBackend(OIDCAuthenticationBackend):
         email = claims.get('email', '')
         sub = claims.get('sub', '')
 
-        if not email or not sub:
+        if not email or not sub: 
             return Customer.objects.none()
         
         try:
-            return Customer.objects.filter(email__iexact=email, sub__iexact=sub)
-        except Customer.DoesNotExist:
+            return Customer.objects.filter(email__iexact=email, sub__iexact=sub)   #check Customer in the database using unique fields 
+        except Customer.DoesNotExist:                                              #email and sub
             return Customer.objects.none()
     
     def update_user(self, user, claims):
